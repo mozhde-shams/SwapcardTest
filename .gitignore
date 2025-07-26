@@ -1,0 +1,55 @@
+# Gradle
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local configuration (SDK path, keys, etc.)
+local.properties
+*.keystore
+*.jks
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Generated files (annotation processors like Hilt/kapt, Room)
+generated/
+build/generated/
+*/build/generated/
+
+# Room schema files (if you export schema for testing)
+schemas/
+
+# Captures (screenshots, tests)
+captures/
+
+# APK / AAB files
+*.apk
+*.aab
+
+# Test results
+test-results/
+outputs/
+
+# External native build (NDK)
+.externalNativeBuild/
+.obj/
+
+# Jetpack Compose previews
+*.preview
+
+# Crashlytics
+crashlytics-build.properties
+
+# Kotlin specific
+*.kotlin_module
