@@ -1,6 +1,9 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.compose.compiler)
+    kotlin("kapt")
+    kotlin("plugin.serialization") version "1.8.10"
 }
 
 android {
@@ -33,11 +36,23 @@ android {
 }
 
 dependencies {
+    implementation(project(":core"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.material3)
+    implementation(libs.hilt.core)
+    implementation(libs.kotlin.serialization)
+    implementation(libs.retrofit)
+    implementation(libs.gson.converter)
+    implementation(libs.hilt.navigation)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.coil)
+    implementation(libs.coil.network.okhttp)
+    implementation(libs.paging.runtime)
+    implementation(libs.paging.compose)
+    kapt(libs.hilt.compiler)
 }

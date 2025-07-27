@@ -5,18 +5,18 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import kotlinx.serialization.json.Json
 import javax.inject.Named
 
 @InstallIn(SingletonComponent::class)
 @Module
 object NetworkModule {
 
-    private const val BASE_URL = "https://randomuser.me/api/"
+    private const val BASE_URL = "https://randomuser.me/"
 
     @Provides
     @Named("baseUrl")
@@ -45,10 +45,13 @@ object NetworkModule {
         httpClient: OkHttpClient,
     ): Retrofit {
         val contentType = "application/json".toMediaType()
+        val json = Json {
+            ignoreUnknownKeys = true
+        }
         return Retrofit
             .Builder()
             .baseUrl(baseUrl)
-            .addConverterFactory(Json.asConverterFactory(contentType))
+            .addConverterFactory(json.asConverterFactory(contentType))
             .client(httpClient)
             .build()
     }
