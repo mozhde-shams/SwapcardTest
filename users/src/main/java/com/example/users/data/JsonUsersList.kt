@@ -14,7 +14,7 @@ data class JsonUsersList(
 data class JsonUser(
     val name: JsonName,
     val picture: JsonPicture,
-    val id: JsonId? = null,
+    val id: JsonId,
 )
 
 @Serializable
@@ -32,7 +32,7 @@ data class JsonPicture(
 
 @Serializable
 data class JsonId(
-    val value: String? = null,
+    val value: String?,
 )
 
 @Serializable

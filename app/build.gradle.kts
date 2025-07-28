@@ -43,6 +43,7 @@ android {
 
 dependencies {
     implementation(project(":users"))
+    implementation(project(":user-detail"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

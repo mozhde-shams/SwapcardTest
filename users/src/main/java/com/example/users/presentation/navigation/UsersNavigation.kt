@@ -10,13 +10,16 @@ import com.example.users.presentation.UsersViewModel
 
 const val USERS_ROUTE = "users"
 
-internal fun NavGraphBuilder.usersScreen() {
+internal fun NavGraphBuilder.usersScreen(
+    onUserDetailsRequested: (String) -> Unit
+) {
     composable(route = USERS_ROUTE) {
         val viewModel: UsersViewModel = hiltViewModel()
         val state by viewModel.state.collectAsState()
         UsersScreen(
             state = state,
-            dispatch = viewModel::dispatch
+            dispatch = viewModel::dispatch,
+            userDetailsRequested = onUserDetailsRequested,
         )
     }
 }

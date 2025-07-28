@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.compose.compiler)
+    kotlin("kapt")
+    kotlin("plugin.serialization") version "1.8.10"
 }
 
 android {
@@ -36,4 +39,12 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material3)
+    implementation(libs.hilt.core)
+    implementation(libs.kotlin.serialization)
+    implementation(libs.hilt.navigation)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.coil.network.okhttp)
+    kapt(libs.hilt.compiler)
 }

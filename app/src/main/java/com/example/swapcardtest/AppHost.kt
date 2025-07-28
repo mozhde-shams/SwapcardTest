@@ -3,6 +3,7 @@ package com.example.swapcardtest
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.example.user_detail.presentation.navigation.userDetailsGraph
 import com.example.users.presentation.navigation.USERS_GRAPH_ROUTE
 import com.example.users.presentation.navigation.usersGraph
 
@@ -13,6 +14,7 @@ fun AppHost() {
         navController = navController,
         startDestination = USERS_GRAPH_ROUTE,
     ) {
-        usersGraph()
+        usersGraph(navController)
+        userDetailsGraph()
     }
 }

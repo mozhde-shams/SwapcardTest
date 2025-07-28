@@ -1,5 +1,6 @@
 package com.example.users.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -44,6 +45,7 @@ import kotlinx.coroutines.flow.flow
 internal fun UsersScreen(
     state: UsersState,
     dispatch: (UsersEvent) -> Unit,
+    userDetailsRequested: (userName: String) -> Unit,
 ) {
     val lazyPagingItems: LazyPagingItems<User> = state.users.collectAsLazyPagingItems()
 
@@ -79,7 +81,10 @@ internal fun UsersScreen(
                 ) {
                     items(lazyPagingItems.itemCount) { index ->
                         lazyPagingItems[index]?.let { user ->
-                            UserRow(user)
+                            UserRow(
+                                user = user,
+                                onClick = userDetailsRequested,
+                            )
                         }
                     }
                     lazyPagingItems.apply {
@@ -110,6 +115,7 @@ internal fun UsersScreen(
 @Composable
 fun UserRow(
     user: User,
+    onClick: (userName: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -122,7 +128,14 @@ fun UserRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(16.dp)
+                .clickable {
+                    user.firstName?.let { first ->
+                        user.lastName?.let { last ->
+                            onClick("$first $last")
+                        }
+                    }
+                },
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
@@ -171,5 +184,6 @@ fun UsersScreenPreview() {
             users = pagingItemsFlow
         ),
         dispatch = {},
+        userDetailsRequested = {},
     )
 }
