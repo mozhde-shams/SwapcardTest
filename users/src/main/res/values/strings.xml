@@ -2,4 +2,6 @@
 <resources>
     <string name="something_went_wrong">Seems like something went wrong.</string>
     <string name="try_again">Try again</string>
+    <string name="remove_bookmark">Remove Bookmark</string>
+    <string name="add_bookmark">Add Bookmark</string>
 </resources>

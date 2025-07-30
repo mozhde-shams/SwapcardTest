@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.users.domain.GetPagedUsersUseCase
+import com.example.core.usecase.ToggleBookmarkUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class UsersViewModel @Inject constructor(
     private val getPagedUsersUseCase: GetPagedUsersUseCase,
+    private val toggleBookmarkUseCase: ToggleBookmarkUseCase,
 ) : ViewModel() {
 
     private val events = MutableSharedFlow<UsersEvent>()
@@ -53,6 +55,7 @@ class UsersViewModel @Inject constructor(
         handleResetRetry()
         handlePUllToRefresh()
         handleResetRefresh()
+        handleToggleBookmark()
     }
 
     private fun handleErrorScreenTryAgainClicked() {
@@ -115,4 +118,14 @@ class UsersViewModel @Inject constructor(
             }
             .launchIn(viewModelScope)
     }
+
+    private fun handleToggleBookmark() {
+        events
+            .filterIsInstance<UsersEvent.ToggleBookmarkClicked>()
+            .onEach { event ->
+                toggleBookmarkUseCase(event.key)
+            }
+            .launchIn(viewModelScope)
+    }
+
 }

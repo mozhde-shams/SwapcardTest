@@ -16,14 +16,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,6 +38,8 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
+import com.example.users.R
+import com.example.users.data.sha256KeyOf
 import com.example.users.domain.User
 import com.example.users.presentation.error.ErrorItem
 import com.example.users.presentation.error.ErrorScreen
@@ -39,13 +47,14 @@ import com.example.users.presentation.loading.LoadingItem
 import com.example.users.presentation.loading.LoadingScreen
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun UsersScreen(
     state: UsersState,
     dispatch: (UsersEvent) -> Unit,
-    userDetailsRequested: (userName: String) -> Unit,
+    userDetailsRequested: (user: User) -> Unit,
 ) {
     val lazyPagingItems: LazyPagingItems<User> = state.users.collectAsLazyPagingItems()
 
@@ -84,6 +93,7 @@ internal fun UsersScreen(
                             UserRow(
                                 user = user,
                                 onClick = userDetailsRequested,
+                                dispatch = dispatch,
                             )
                         }
                     }
@@ -115,9 +125,13 @@ internal fun UsersScreen(
 @Composable
 fun UserRow(
     user: User,
-    onClick: (userName: String) -> Unit,
+    onClick: (user: User) -> Unit,
+    dispatch: (UsersEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+
+    val isBookmarked by user.isBookmarked.collectAsState(initial = false)
+    val shaKey = sha256KeyOf(user)
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -128,30 +142,49 @@ fun UserRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
-                .clickable {
-                    user.firstName?.let { first ->
-                        user.lastName?.let { last ->
-                            onClick("$first $last")
-                        }
-                    }
-                },
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AsyncImage(
-                model = user.picture,
-                contentDescription = "${user.firstName} ${user.lastName}",
-                contentScale = ContentScale.Crop,
+            Row(
                 modifier = Modifier
-                    .size(56.dp)
-                    .clip(CircleShape)
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = "${user.firstName} ${user.lastName}",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
-            )
+                    .weight(1f)
+                    .clickable {
+                        onClick(user)
+                    },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                AsyncImage(
+                    model = user.picture,
+                    contentDescription = "${user.firstName.orEmpty()} ${user.lastName.orEmpty()}",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(56.dp)
+                        .clip(CircleShape)
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = "${user.firstName.orEmpty()} ${user.lastName.orEmpty()}",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+            IconButton(
+                onClick = {
+                    dispatch(UsersEvent.ToggleBookmarkClicked(shaKey))
+                }
+            ) {
+                val iconRes = if (isBookmarked)
+                    R.drawable.bookmark_added
+                else
+                    R.drawable.bookmark_remove
+                Icon(
+                    painter = painterResource(id = iconRes),
+                    contentDescription = if (isBookmarked)
+                        stringResource(R.string.remove_bookmark)
+                    else
+                        stringResource(R.string.add_bookmark)
+                )
+            }
         }
     }
 }
@@ -165,12 +198,14 @@ fun UsersScreenPreview() {
             lastName = "Johnson",
             picture = "",
             id = "40639914",
+            isBookmarked = flowOf(true),
         ),
         User(
             firstName = "Liam",
             lastName = "Carter",
             picture = "",
             id = "211929861",
+            isBookmarked = flowOf(false),
         )
     )
 

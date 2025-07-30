@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     kotlin("kapt")
+    kotlin("plugin.serialization") version "1.8.10"
 }
 
 android {
@@ -41,5 +42,8 @@ dependencies {
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.kotlin.serialization)
     implementation(libs.hilt.android)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
     kapt(libs.hilt.compiler)
 }

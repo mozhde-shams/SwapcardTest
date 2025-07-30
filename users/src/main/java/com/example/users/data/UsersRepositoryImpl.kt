@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.example.core.db.BookmarkDao
 import com.example.users.data.remote.Remote
 import com.example.users.data.remote.UsersPagingSource
 import com.example.users.domain.User
@@ -14,6 +15,7 @@ import javax.inject.Inject
 
 class UsersRepositoryImpl @Inject constructor(
     private val remote: Remote,
+    private val bookmarkDao: BookmarkDao,
 ) : UsersRepository {
 
     companion object {
@@ -31,7 +33,7 @@ class UsersRepositoryImpl @Inject constructor(
         }
     ).flow.map { usersPagingData ->
         usersPagingData.map { jsonUser ->
-            jsonUser.toDomain()
+            jsonUser.toDomain(bookmarkDao)
         }
     }
 }

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="no_user_name_provided">No user name provided</string>
+    <string name="remove_bookmark">Remove Bookmark</string>
+    <string name="add_bookmark">Add Bookmark</string>
 </resources>

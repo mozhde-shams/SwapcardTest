@@ -6,4 +6,5 @@ sealed class UsersEvent {
     data object ResetRetry : UsersEvent()
     data object PullToRefresh : UsersEvent()
     data object ResetRefresh : UsersEvent()
+    data class ToggleBookmarkClicked(val key: String) : UsersEvent()
 }
