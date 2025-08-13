@@ -3,8 +3,8 @@ package com.example.users.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.example.users.domain.GetPagedUsersUseCase
 import com.example.core.usecase.ToggleBookmarkUseCase
+import com.example.users.domain.GetPagedUsersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,15 +37,14 @@ class UsersViewModel @Inject constructor(
     }
 
     private fun fetchUsers() {
-        viewModelScope.launch {
-            val users = getPagedUsersUseCase()
-                .cachedIn(viewModelScope)
 
-            mutableState.update {
-                it.copy(
-                    users = users,
-                )
-            }
+        val users = getPagedUsersUseCase()
+            .cachedIn(viewModelScope)
+
+        mutableState.update {
+            it.copy(
+                users = users,
+            )
         }
     }
 

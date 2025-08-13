@@ -7,5 +7,5 @@ import javax.inject.Inject
 class GetPagedUsersUseCase @Inject constructor(
     private val usersRepository: UsersRepository,
 ) {
-    suspend operator fun invoke(): Flow<PagingData<User>> = usersRepository.getUsersList()
+    operator fun invoke(): Flow<PagingData<User>> = usersRepository.getUsersList()
 }

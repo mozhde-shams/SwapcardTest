@@ -30,7 +30,7 @@ class UserDetailsViewModel @Inject constructor(
     val state: StateFlow<UserDetailsState>
         get() = mutableState
 
-    private val userKey: String = checkNotNull(savedStateHandle[ARG_USER_KEY])
+    private val userKey: String = savedStateHandle.get<String>(ARG_USER_KEY).orEmpty()
     private val userName: String = savedStateHandle.get<String>(ARG_USER_NAME).orEmpty()
 
     init {

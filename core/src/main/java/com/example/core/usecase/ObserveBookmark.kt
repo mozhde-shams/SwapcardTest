@@ -2,11 +2,12 @@ package com.example.core.usecase
 
 import com.example.core.db.BookmarkDao
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
 class ObserveBookmarkUseCase @Inject constructor(
     private val dao: BookmarkDao
 ) {
     operator fun invoke(key: String): Flow<Boolean> =
-        dao.isBookmarked(key)
+        dao.isBookmarked(key).distinctUntilChanged()
 }

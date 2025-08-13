@@ -23,7 +23,7 @@ class UsersRepositoryImpl @Inject constructor(
         const val PREFETCH_DISTANCE = 2
     }
 
-    override suspend fun getUsersList(): Flow<PagingData<User>> = Pager(
+    override fun getUsersList(): Flow<PagingData<User>> = Pager(
         config = PagingConfig(
             pageSize = PAGE_SIZE,
             prefetchDistance = PREFETCH_DISTANCE,

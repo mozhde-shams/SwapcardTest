@@ -4,5 +4,5 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 
 interface UsersRepository {
-    suspend fun getUsersList(): Flow<PagingData<User>>
+    fun getUsersList(): Flow<PagingData<User>>
 }
